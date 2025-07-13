@@ -53,3 +53,24 @@
     <a asp-page="./Edit" asp-route-id="@Model.LionProfile.LionProfileId">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+
+<script>
+    "use strict";
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/LionProfileHub").build();
+
+    connection.start().then(function () {
+        console.log("Connected to the SignalR Hub");
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    connection.on("ReceiveDelete_LionProfile", function (lionProfileId) {
+            document.getElementById("LionProfile_Container").innerHTML =
+                    '<div class="alert alert-info">' +
+                        '<strong>Notice:</strong> This lion profile has been deleted by another user.' +
+                    '</div>'
+        });
+</script>

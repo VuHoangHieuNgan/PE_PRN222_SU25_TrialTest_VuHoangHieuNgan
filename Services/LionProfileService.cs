@@ -47,6 +47,10 @@ namespace Services
             return await _repository.RemoveAsync(item);
         }
 
+        public async Task<List<LionProfile>> SearchAsync(string lionTypeName, double? weight)
+        {
+            return await _repository.SearchAsync(lionTypeName, weight);
+        }
         public (List<LionProfile> list, int totalCount) GetPaginatedProfiles(int pageIndex, int pageSize)
         {
             return _repository.GetPaginatedProfiles(pageIndex, pageSize);

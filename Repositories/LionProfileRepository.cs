@@ -11,10 +11,7 @@ namespace Repositories
 {
     public class LionProfileRepository : GenericRepository<LionProfile>
     {
-        public LionProfileRepository()
-        {
-
-        }
+        public LionProfileRepository() { }
 
         public LionProfileRepository(SU25LionDBContext context) => _context = context;
 
@@ -30,6 +27,17 @@ namespace Repositories
             return await _context.LionProfiles
                 .Include(p => p.LionType)
                 .FirstOrDefaultAsync(p => p.LionProfileId == id) ?? new LionProfile();
+        }
+
+        public async Task<List<LionProfile>> SearchAsync(string lionTypeName, double? weight)
+        {
+            var list = await _context.LionProfiles
+                .Include(i => i.LionType)
+                .Where(i => (string.IsNullOrEmpty(lionTypeName) || i.LionType.LionTypeName.Contains(lionTypeName)) 
+                && (!weight.HasValue || i.Weight == weight))
+                .ToListAsync();
+
+            return list ?? new List<LionProfile>();
         }
 
         public (List<LionProfile> list, int totalCount) GetPaginatedProfiles(int pageIndex, int pageSize)

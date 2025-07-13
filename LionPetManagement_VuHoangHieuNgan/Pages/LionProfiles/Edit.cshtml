@@ -10,7 +10,7 @@
 <h4>LionProfile</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4" id="LionProfile_Container">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="LionProfile.LionProfileId" />
@@ -64,3 +64,24 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+
+<script>
+    "use strict";
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/LionProfileHub").build();
+
+    connection.start().then(function () {
+        console.log("Connected to the SignalR Hub");
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    connection.on("ReceiveDelete_LionProfile", function (lionProfileId) {
+            document.getElementById("LionProfile_Container").innerHTML =
+                    '<div class="alert alert-info">' +
+                        '<strong>Notice:</strong> This lion profile has been deleted by another user.' +
+                    '</div>'
+        });
+</script>

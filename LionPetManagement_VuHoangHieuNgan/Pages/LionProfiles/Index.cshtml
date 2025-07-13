@@ -49,10 +49,10 @@
 			<th></th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody id="lionProfilesTBodyId">
 		@foreach (var item in Model.LionProfile)
 		{
-			<tr>
+			<tr id="@item.LionProfileId">
 				<td>
 					@Html.DisplayFor(modelItem => item.LionName)
 				</td>
@@ -130,3 +130,23 @@
 		</ul>
 	</nav>
 </div>
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+
+<script>
+	"use strict";
+
+	var connection = new signalR.HubConnectionBuilder().withUrl("/LionProfileHub").build();
+
+	connection.start().then(function () {
+		console.log("Connected to the SignalR Hub");
+	}).catch(function (err) {
+		return console.error(err.toString());
+	});
+
+	connection.on("ReceiveDelete_LionProfile", function (lionProfileId) {
+		$('#lionProfilesTBodyId').find(`tr[id='${lionProfileId}']`).fadeOut(300, function() {
+			$(this).remove();
+		});
+	});
+</script>

@@ -1,3 +1,4 @@
+using LionPetManagement_VuHoangHieuNgan.Hubs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Repositories.Models;
 using Services;
@@ -47,6 +48,6 @@ app.MapRazorPages();
 
 app.MapRazorPages().RequireAuthorization();
 
-//app.MapHub<LionProfileHub>("/LionProfileHub");
+app.MapHub<LionProfileHub>("/LionProfileHub");
 
 app.Run();
