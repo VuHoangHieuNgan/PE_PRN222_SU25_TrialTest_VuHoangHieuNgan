@@ -145,9 +145,30 @@
 		return console.error(err.toString());
 	});
 
+	// connection.on("ReceiveDelete_LionProfile", function (lionProfileId) {
+	// 	$('#lionProfilesTBodyId').find(`tr[id='${lionProfileId}']`).fadeOut(300, function() {
+	// 		$(this).remove();
+	// 	});
+	// });
 	connection.on("ReceiveDelete_LionProfile", function (lionProfileId) {
+		// Lấy current page từ URL hoặc từ server
+		var currentPage = @Model.CurrentPage;
+		var totalPages = @Model.TotalPages;
+
+		// Xóa row với animation
 		$('#lionProfilesTBodyId').find(`tr[id='${lionProfileId}']`).fadeOut(300, function() {
 			$(this).remove();
+
+			// Kiểm tra nếu page hiện tại không còn item và không phải page đầu
+			var remainingItems = $('#lionProfilesTBodyId tr').length;
+
+			if (remainingItems === 0 && currentPage > 1) {
+				// Redirect về page trước đó nếu page hiện tại trống
+				window.location.href = `/LionProfile/Index?pageIndex=${currentPage - 1}`;
+			} else if (remainingItems < @Model.PageSize && currentPage <= totalPages) {
+				// Reload page hiện tại để cập nhật pagination
+				window.location.href = `/LionProfile/Index?pageIndex=${currentPage}`;
+			}
 		});
 	});
 </script>
