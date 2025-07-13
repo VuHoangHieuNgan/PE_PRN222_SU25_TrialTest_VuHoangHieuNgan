@@ -32,34 +32,17 @@ namespace Repositories
                 .FirstOrDefaultAsync(p => p.LionProfileId == id) ?? new LionProfile();
         }
 
-        public async Task<List<LionProfile>> SearchAsync(string lionTypeName, double? weight, int pageNumber, int pageSize)
+        public (List<LionProfile> list, int totalCount) GetPaginatedProfiles(int pageIndex, int pageSize)
         {
-            return await _context.LionProfiles
+            var list = _context.LionProfiles
                 .Include(i => i.LionType)
-                .Where(i =>
-                    (string.IsNullOrEmpty(lionTypeName) || i.LionType.LionTypeName.Contains(lionTypeName))
-                    && (weight == null || i.Weight == weight)
-                )
-                .OrderByDescending(a => a.LionProfileId)
-                .Skip((pageNumber - 1) * pageSize)
+                .OrderByDescending(i => i.LionProfileId)
+                .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync() ?? new List<LionProfile>();
-        }
+                .ToList() ?? new List<LionProfile>();
+            var totalCount = _context.LionProfiles.Count();
 
-        public async Task<int> GetTotalCountAsync()
-        {
-            return await _context.LionProfiles.CountAsync();
-        }
-
-        public async Task<int> GetSearchCountAsync(string lionTypeName, double? weight)
-        {
-            return await _context.LionProfiles
-                .Include(i => i.LionType)
-                .Where(i =>
-                    (string.IsNullOrEmpty(lionTypeName) || i.LionType.LionTypeName.Contains(lionTypeName))
-                    && (weight == null || i.Weight == weight)
-                )
-                .CountAsync();
+            return (list, totalCount);
         }
     }
 }

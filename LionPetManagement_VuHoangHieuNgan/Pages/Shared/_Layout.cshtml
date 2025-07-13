@@ -34,12 +34,10 @@
 				<ul class="navbar-nav">
 					@if (User.Identity!.IsAuthenticated)
 					{
-						@* Authorized - User đã đăng nhập *@
 						<li class="nav-item px-3">
 							<span class="navbar-text me-3">
 								<i class="fas fa-user-circle me-2"></i>
-								Xin chào, @User.Identity.Name
-								@* Hiển thị role *@
+								Xin chào, @Context.Request.Cookies["UserName"]
 								@if (User.HasClaim(ClaimTypes.Role, "2"))
 								{
 									<span class="badge bg-success ms-2">Manager</span>
@@ -53,9 +51,6 @@
 						<li class="nav-item px-3">
 							@Html.AntiForgeryToken() 
 							<a class="nav-link text-dark" asp-area="" asp-page="/Authentication/Logout">Logout</a>
-							<a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-
-
 						</li>
 					}
 					else

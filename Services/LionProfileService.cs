@@ -18,7 +18,6 @@ namespace Services
         {
             return await _repository.GetAllAsync();
         }
-
         public async Task<LionProfile> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
@@ -46,6 +45,11 @@ namespace Services
             }
 
             return await _repository.RemoveAsync(item);
+        }
+
+        public (List<LionProfile> list, int totalCount) GetPaginatedProfiles(int pageIndex, int pageSize)
+        {
+            return _repository.GetPaginatedProfiles(pageIndex, pageSize);
         }
     }
 }

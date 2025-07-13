@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Models;
+using Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,11 @@ namespace LionPetManagement_VuHoangHieuNgan.Pages.LionProfiles
     [Authorize(Roles = "2, 3")]
     public class DetailsModel : PageModel
     {
-        private readonly Repositories.Models.SU25LionDBContext _context;
+        private readonly LionProfileService _lionProfileService;
 
-        public DetailsModel(Repositories.Models.SU25LionDBContext context)
+        public DetailsModel(LionProfileService lionProfileService)
         {
-            _context = context;
+            _lionProfileService = lionProfileService;
         }
 
         public LionProfile LionProfile { get; set; } = default!;
@@ -29,7 +30,7 @@ namespace LionPetManagement_VuHoangHieuNgan.Pages.LionProfiles
                 return NotFound();
             }
 
-            var lionprofile = await _context.LionProfiles.FirstOrDefaultAsync(m => m.LionProfileId == id);
+            var lionprofile = await _lionProfileService.GetByIdAsync(id.Value);
             if (lionprofile == null)
             {
                 return NotFound();

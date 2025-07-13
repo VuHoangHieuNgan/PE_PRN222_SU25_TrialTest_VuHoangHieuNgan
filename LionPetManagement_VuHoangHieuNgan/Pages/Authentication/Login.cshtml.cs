@@ -28,12 +28,19 @@ namespace LionPetManagement_VuHoangHieuNgan.Pages.Authentication
         [Display(Name = "Password")]
         public string Password { get; set; } = string.Empty;
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            return CheckLogin();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var loginCheck = CheckLogin();
+            if (loginCheck is RedirectToPageResult)
+            {
+                return loginCheck;
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -64,6 +71,15 @@ namespace LionPetManagement_VuHoangHieuNgan.Pages.Authentication
             Response.Cookies.Append("UserName", user.UserName);
 
             return RedirectToPage("/LionProfiles/Index");
+        }
+
+        private IActionResult CheckLogin()
+        {
+            if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToPage("/LionProfiles/Index");
+            }
+            return Page();
         }
     }
 }

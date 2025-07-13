@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Models;
+using Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,13 @@ namespace LionPetManagement_VuHoangHieuNgan.Pages.LionProfiles
     [Authorize(Roles = "2")]
     public class EditModel : PageModel
     {
-        private readonly Repositories.Models.SU25LionDBContext _context;
+        private readonly LionProfileService _lionProfileService;
+        private readonly LionTypeService _lionTypeService;
 
-        public EditModel(Repositories.Models.SU25LionDBContext context)
+        public EditModel(LionProfileService lionProfileService, LionTypeService lionTypeService)
         {
-            _context = context;
+            _lionProfileService = lionProfileService;
+            _lionTypeService = lionTypeService;
         }
 
         [BindProperty]
@@ -31,18 +34,17 @@ namespace LionPetManagement_VuHoangHieuNgan.Pages.LionProfiles
                 return NotFound();
             }
 
-            var lionprofile =  await _context.LionProfiles.FirstOrDefaultAsync(m => m.LionProfileId == id);
+            var lionprofile =  await _lionProfileService.GetByIdAsync(id.Value);
             if (lionprofile == null)
             {
                 return NotFound();
             }
             LionProfile = lionprofile;
-           ViewData["LionTypeId"] = new SelectList(_context.LionTypes, "LionTypeId", "LionTypeId");
+
+            await LoadDropdownData();
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -50,15 +52,13 @@ namespace LionPetManagement_VuHoangHieuNgan.Pages.LionProfiles
                 return Page();
             }
 
-            _context.Attach(LionProfile).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _lionProfileService.UpdateAsync(LionProfile);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LionProfileExists(LionProfile.LionProfileId))
+                if (!LionProfileExists(LionProfile.LionProfileId).Result)
                 {
                     return NotFound();
                 }
@@ -71,9 +71,21 @@ namespace LionPetManagement_VuHoangHieuNgan.Pages.LionProfiles
             return RedirectToPage("./Index");
         }
 
-        private bool LionProfileExists(int id)
+        private async Task<bool> LionProfileExists(int id)
         {
-            return _context.LionProfiles.Any(e => e.LionProfileId == id);
+            var result = await _lionProfileService.GetByIdAsync(id);
+            return result != null && result.LionProfileId == id;
+        }
+
+        private async Task LoadDropdownData()
+        {
+            var lionTypes = await _lionTypeService.GetAllAsync();
+            var lionTypeSelectList = lionTypes.Select(l => new SelectListItem
+            {
+                Value = l.LionTypeId.ToString(),
+                Text = $"{l.LionTypeId} - {l.LionTypeName}"
+            }).ToList();
+            ViewData["LionTypeId"] = new SelectList(lionTypeSelectList, "Value", "Text");
         }
     }
 }

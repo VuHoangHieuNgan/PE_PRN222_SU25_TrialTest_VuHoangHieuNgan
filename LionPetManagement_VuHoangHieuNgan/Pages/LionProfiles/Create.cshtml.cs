@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Repositories.Models;
+using Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,34 +14,52 @@ namespace LionPetManagement_VuHoangHieuNgan.Pages.LionProfiles
     [Authorize(Roles = "2")]
     public class CreateModel : PageModel
     {
-        private readonly Repositories.Models.SU25LionDBContext _context;
+        private readonly LionProfileService _lionProfileService;
+        private readonly LionTypeService _lionTypeService;
 
-        public CreateModel(Repositories.Models.SU25LionDBContext context)
+        public CreateModel(LionProfileService lionProfileService, LionTypeService lionTypeService)
         {
-            _context = context;
-        }
-
-        public IActionResult OnGet()
-        {
-        ViewData["LionTypeId"] = new SelectList(_context.LionTypes, "LionTypeId", "LionTypeId");
-            return Page();
+            _lionProfileService = lionProfileService;
+            _lionTypeService = lionTypeService;
         }
 
         [BindProperty]
         public LionProfile LionProfile { get; set; } = default!;
 
-        // For more information, see https://aka.ms/RazorPagesCRUD.
+        public async Task<IActionResult> OnGetAsync()
+        {
+            await LoadDropdownData();
+            LionProfile = new LionProfile
+            {
+                ModifiedDate = DateTime.Now
+            };
+
+            return Page();
+
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                await LoadDropdownData();
                 return Page();
             }
 
-            _context.LionProfiles.Add(LionProfile);
-            await _context.SaveChangesAsync();
+            await _lionProfileService.CreateAsync(LionProfile);
 
             return RedirectToPage("./Index");
+        }
+
+        private async Task LoadDropdownData()
+        {
+            var lionTypes = await _lionTypeService.GetAllAsync();
+            var lionTypeSelectList = lionTypes.Select(l => new SelectListItem
+            {
+                Value = l.LionTypeId.ToString(),
+                Text =  $"{l.LionTypeId} - {l.LionTypeName}"
+            }).ToList();
+            ViewData["LionTypeId"] = new SelectList(lionTypeSelectList, "Value", "Text");
         }
     }
 }
