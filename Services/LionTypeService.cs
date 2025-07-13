@@ -10,8 +10,8 @@ namespace Services
 {
     public class LionTypeService
     {
-        private readonly LionTypeReporitory _reporitory;
-        public LionTypeService() => _reporitory ??= new LionTypeReporitory();
+        private readonly LionTypeRepository _reporitory;
+        public LionTypeService() => _reporitory ??= new LionTypeRepository();
 
         public async Task<List<LionType>> GetAllAsync()
         {

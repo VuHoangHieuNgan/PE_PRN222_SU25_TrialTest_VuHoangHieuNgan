@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    public class LionTypeReporitory : GenericRepository<LionType>
+    public class LionTypeRepository : GenericRepository<LionType>
     {
-        public LionTypeReporitory() { }
+        public LionTypeRepository() { }
 
-        public LionTypeReporitory(SU25LionDBContext context) => _context = context;
+        public LionTypeRepository(SU25LionDBContext context) => _context = context;
     }
 }
