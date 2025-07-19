@@ -11,7 +11,7 @@
 <div>
 	<h4>LionProfile</h4>
 	<hr />
-	<dl class="row">
+	<dl class="row" id="LionProfile_Container">
 		<dt class="col-sm-2">
 			@Html.DisplayNameFor(model => model.LionProfile.LionName)
 		</dt>
@@ -50,15 +50,6 @@
 		</dd>
 	</dl>
 
-	@* <form method="post">
-		<input type="hidden" asp-for="LionProfile.LionProfileId" />
-		<input type="submit" value="Delete" class="btn btn-danger" /> |
-		<a asp-page="./Index">Back to List</a>
-	</form>
-	<input type="button" id="btnHubDelete" value="Delete SignalR" class="btn btn-danger" />
-	<a asp-page="./Index" class="btn btn-danger">
-		<i class="fas fa-arrow-left me-2"></i>Cancel
-	</a> *@
 	<form method="post">
 		<input type="hidden" asp-for="LionProfile.LionProfileId" />
 		<input type="submit" value="Delete" class="btn btn-danger" /> |

@@ -22,7 +22,7 @@ public partial class LionProfile
     [Required]
     [StringLength(150)]
     [MinLength(4, ErrorMessage = "LionName must be at least 4 characters long.")]
-    [RegularExpression(@"^(?!.*[#@&()])([A-Z][a-zA-Z]*\s*)+$", ErrorMessage = "Each word must start with a capital letter and contain only letters. No special characters allowed.")]
+    [RegularExpression(@"^(?!.*[#@&()])([A-Z][a-zA-Z0-9]*\s*)+$", ErrorMessage = "Each word must start with a capital letter and contain only letters. No special characters allowed.")]
 
     public string LionName { get; set; }
 

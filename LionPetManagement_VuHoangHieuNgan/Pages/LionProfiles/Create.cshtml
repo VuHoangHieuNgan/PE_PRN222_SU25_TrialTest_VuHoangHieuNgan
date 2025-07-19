@@ -50,15 +50,61 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="button" id="btnHubCreate" value="SignalR Hub" class="btn btn-danger-custom" />
+                <a asp-page="./Index" class="btn btn-secondary-custom">
+                    <i class="fas fa-arrow-left me-2">Back to List</i>
+                </a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
+@* <div>
     <a asp-page="Index">Back to List</a>
-</div>
+</div> *@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script>
+    "use strict";
+    var connection = new signalR.HubConnectionBuilder().withUrl("/LionProfileHub").build();
+    
+    connection.start().then(function () {
+        console.log("Connected to the SignalR Hub");
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+    
+    document.getElementById("btnHubCreate").addEventListener("click", function (event) {
+        if (typeof validateAppointmentForm === "function" && !validateAppointmentForm()) {
+            console.error("Validation failed. Please check the form inputs.");
+            event.preventDefault();
+            return;
+        } else {
+            console.log("Passed. Proceeding to send data to SignalRHub.");
+        }
+
+        // Gửi dữ liệu đến SignalRHub
+        var dataObj = JSON.stringify({
+            LionTypeId: document.getElementById("LionProfile_LionTypeId").value,
+            // ConsultationType: document.querySelector('input[name="AppointmentsNganVHH.ConsultationType"]:checked').value,
+            LionName: document.getElementById("LionProfile_LionName").value,
+            Weight: document.getElementById("LionProfile_Weight").value,
+            Characteristics: document.getElementById("LionProfile_Characteristics").value,
+            Warning: document.getElementById("LionProfile_Warning").value,
+            ModifiedDate: document.getElementById("LionProfile_ModifiedDate").value
+        });
+
+        console.log(dataObj);
+
+        connection.invoke("HubCreate_LionProfile", dataObj).then(() => {
+            window.location.href = "/LionProfile/Index";
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+    });
+
+</script>
