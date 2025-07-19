@@ -177,9 +177,9 @@
 			<td>${item.lionTypeId}</td>
 			<td>${item.lionTypeName}</td>
 			<td>
-				<a asp-page="./Edit" asp-route-id="${item.lionProfileId}">Edit</a> |
-				<a asp-page="./Details" asp-route-id="${item.lionProfileId}">Details</a> |
-				<a asp-page="./Delete" asp-route-id="${item.lionProfileId}">Delete</a>
+				<a href="/LionProfile/Update/${item.lionProfileId}">Edit</a> |
+				<a href="/LionProfile/Details/${item.lionProfileId}">Details</a> |
+				<a href="/LionProfile/Delete/${item.lionProfileId}">Delete</a>
 			</td>
 		</tr>`;
 		
@@ -188,4 +188,18 @@
 		updateStats();
 	});
 
+
+	connection.on("ReceiveUpdate_LionProfile", function (item) {
+		console.log("Received updated LionProfile:", item);
+
+		var row = $(`#lionProfilesTBodyId tr#${item.lionProfileId}`);
+		row.find('td:nth-child(1)').text(item.lionName);
+		row.find('td:nth-child(2)').text(item.weight);
+		row.find('td:nth-child(3)').text(item.characteristics);
+		row.find('td:nth-child(4)').text(item.warning);
+		row.find('td:nth-child(5)').text(item.modifiedDate);
+		row.find('td:nth-child(6)').text(item.lionTypeId);
+		row.find('td:nth-child(7)').text(item.lionTypeName);  
+		updateStats();
+	});
 </script>

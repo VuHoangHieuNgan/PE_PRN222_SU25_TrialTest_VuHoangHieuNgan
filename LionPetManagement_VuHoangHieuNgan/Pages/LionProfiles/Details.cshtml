@@ -14,38 +14,44 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LionProfile.LionName)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10" id="LionProfile_LionName">
             @Html.DisplayFor(model => model.LionProfile.LionName)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LionProfile.Weight)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10" id="LionProfile_Weight">
             @Html.DisplayFor(model => model.LionProfile.Weight)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LionProfile.Characteristics)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10" id="LionProfile_Characteristics">
             @Html.DisplayFor(model => model.LionProfile.Characteristics)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LionProfile.Warning)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10" id="LionProfile_Warning">
             @Html.DisplayFor(model => model.LionProfile.Warning)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LionProfile.ModifiedDate)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10" id="LionProfile_ModifiedDate">
             @Html.DisplayFor(model => model.LionProfile.ModifiedDate)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LionProfile.LionType)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10" id="LionType_LionTypeId">
             @Html.DisplayFor(model => model.LionProfile.LionType.LionTypeId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LionProfile.LionType.LionTypeName)
+        </dt>
+        <dd class="col-sm-10" id="LionProfile_LionType_LionTypeName">
+            @Html.DisplayFor(model => model.LionProfile.LionType.LionTypeName)
         </dd>
     </dl>
 </div>
@@ -67,10 +73,21 @@
         return console.error(err.toString());
     });
 
-    connection.on("ReceiveDelete_LionProfile", function (lionProfileId) {
+    connection.on("ReceiveDelete_LionProfile", function (item) {
             document.getElementById("LionProfile_Container").innerHTML =
                     '<div class="alert alert-info">' +
                         '<strong>Notice:</strong> This lion profile has been deleted by another user.' +
                     '</div>'
         });
+
+	connection.on("ReceiveUpdate_LionProfile", function (item) {
+		console.log("Received updated LionProfile data:", item);
+        document.getElementById("LionProfile_LionName").innerHTML = item.lionName;
+        document.getElementById("LionProfile_Weight").innerHTML = item.weight;
+        document.getElementById("LionProfile_Characteristics").innerHTML = item.characteristics;
+        document.getElementById("LionProfile_Warning").innerHTML = item.warning;
+        document.getElementById("LionProfile_ModifiedDate").innerHTML = item.modifiedDate;
+        document.getElementById("LionType_LionTypeId").innerHTML = item.lionTypeId;
+        document.getElementById("LionProfile_LionType_LionTypeName").innerHTML = item.lionTypeName;
+	});
 </script>
