@@ -82,27 +82,40 @@
 				'</div>'
 	});
 
-		document.getElementById("btnHubUpdate").addEventListener("click", function (event) {
-		event.preventDefault();
+	document.getElementById("btnHubUpdate").addEventListener("click", function (event) {
+		var form = this.closest("form");
+		if (form && $(form).valid()) {
+			event.preventDefault();
 
-		var dataObj = JSON.stringify({
-			lionProfileId: document.getElementById("LionProfile_LionProfileId").value,
-			LionTypeId: document.getElementById("LionProfile_LionTypeId").value,
-			LionName: document.getElementById("LionProfile_LionName").value,
-			Weight: document.getElementById("LionProfile_Weight").value,
-			Characteristics: document.getElementById("LionProfile_Characteristics").value,
-			Warning: document.getElementById("LionProfile_Warning").value,
-			ModifiedDate: document.getElementById("LionProfile_ModifiedDate").value
-		});
+			var dataObj = JSON.stringify({
+				lionProfileId: document.getElementById("LionProfile_LionProfileId").value,
+				LionTypeId: document.getElementById("LionProfile_LionTypeId").value,
+				LionName: document.getElementById("LionProfile_LionName").value,
+				Weight: document.getElementById("LionProfile_Weight").value,
+				Characteristics: document.getElementById("LionProfile_Characteristics").value,
+				Warning: document.getElementById("LionProfile_Warning").value,
+				ModifiedDate: document.getElementById("LionProfile_ModifiedDate").value
+			});
 
-		console.log("Sending data to SignalRHub:", dataObj);
-		connection.invoke("HubUpdate_LionProfile", dataObj).catch(function (err) {
-			return console.error(err.toString());
-		});
+			console.log("Sending data to SignalRHub:", dataObj);
+			connection.invoke("HubUpdate_LionProfile", dataObj).catch(function (err) {
+				return console.error(err.toString());
+			});
+			// alert("Update successfully");
+				// Thêm alert vào container sau khi update thành công
+			var alertHtml = '<div class="alert alert-success alert-dismissible fade show mt-3" role="alert">'
+				+ '<strong>Update successfully!</strong>'
+				+ '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+				+ '</div>';
+
+			$("#LionProfile_Container").prepend(alertHtml);
+		} else {
+			console.error("Validation failed. Please check the form inputs.");
+			event.preventDefault();
+		}
 	});
 
 </script>
-
 
 @section Scripts {
 	@{

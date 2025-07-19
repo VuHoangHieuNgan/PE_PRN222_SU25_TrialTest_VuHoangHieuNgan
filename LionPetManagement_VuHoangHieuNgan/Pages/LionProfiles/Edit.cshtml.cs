@@ -49,6 +49,7 @@ namespace LionPetManagement_VuHoangHieuNgan.Pages.LionProfiles
         {
             if (!ModelState.IsValid)
             {
+                await LoadDropdownData();
                 return Page();
             }
 

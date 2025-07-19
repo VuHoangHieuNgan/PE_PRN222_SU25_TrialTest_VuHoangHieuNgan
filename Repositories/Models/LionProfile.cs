@@ -27,8 +27,8 @@ public partial class LionProfile
     public string LionName { get; set; }
 
     [Required]
-    //[Range(30, double.MaxValue, ErrorMessage = "Weight must be greater than 30.")]
-    [GreaterThan30Attribute(ErrorMessage = "Weight must be greater than 30.")]
+    [Range(30.00000000000001, double.MaxValue, ErrorMessage = "Weight must be greater than 30.")]
+    //[GreaterThan30Attribute(ErrorMessage = "Weight must be greater than 30.")]
     public double Weight { get; set; }
 
     [Required]
