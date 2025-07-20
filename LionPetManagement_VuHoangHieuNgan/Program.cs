@@ -12,8 +12,6 @@ builder.Services.AddScoped<LionAccountService>();
 builder.Services.AddScoped<LionProfileService>();
 builder.Services.AddScoped<LionTypeService>();
 
-builder.Services.AddScoped<SU25LionDBContext>();
-
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
