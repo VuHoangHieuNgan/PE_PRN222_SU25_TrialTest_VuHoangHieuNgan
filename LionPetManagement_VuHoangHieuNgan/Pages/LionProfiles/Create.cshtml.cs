@@ -53,13 +53,13 @@ namespace LionPetManagement_VuHoangHieuNgan.Pages.LionProfiles
 
         private async Task LoadDropdownData()
         {
-            var lionTypes = await _lionTypeService.GetAllAsync();
-            var lionTypeSelectList = lionTypes.Select(l => new SelectListItem
+            var list = await _lionTypeService.GetAllAsync();
+            var selectList = list.Select(l => new SelectListItem
             {
                 Value = l.LionTypeId.ToString(),
                 Text =  $"{l.LionTypeId} - {l.LionTypeName}"
             }).ToList();
-            ViewData["LionTypeId"] = new SelectList(lionTypeSelectList, "Value", "Text");
+            ViewData["LionTypeId"] = new SelectList(selectList, "Value", "Text");
         }
     }
 }

@@ -15,7 +15,6 @@ namespace Repositories
         {
 
         }
-
         public LionAccountRepository(SU25LionDBContext context) => _context = context;
 
         public async Task<LionAccount?> GetUserAccount(string email, string password)

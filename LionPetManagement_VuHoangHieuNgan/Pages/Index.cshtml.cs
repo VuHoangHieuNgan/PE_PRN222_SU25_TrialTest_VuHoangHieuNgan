@@ -12,9 +12,14 @@ namespace LionPetManagement_VuHoangHieuNgan.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToPage("/LionProfiles/Index");
+            }
 
+            return RedirectToPage("/Authentication/Login");
         }
     }
 }

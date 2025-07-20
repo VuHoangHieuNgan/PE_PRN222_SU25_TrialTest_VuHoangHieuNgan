@@ -11,7 +11,7 @@
 <div>
 	<h4>LionProfile</h4>
 	<hr />
-	<dl class="row" id="LionProfile_Container">
+	<dl class="row" id="Container">
 		<dt class="col-sm-2">
 			@Html.DisplayNameFor(model => model.LionProfile.LionName)
 		</dt>
@@ -90,10 +90,10 @@
 		event.preventDefault();
 	});
 
-	connection.on("ReceiveDelete_LionProfile", function (lionProfileId) {
-			document.getElementById("LionProfile_Container").innerHTML =
+	connection.on("ReceiveDelete_LionProfile", function (id) {
+			document.getElementById("Container").innerHTML =
 					'<div class="alert alert-info">' +
-						'<strong>Notice:</strong> This lion profile has been deleted by another user.' +
+						'<strong>Notice:</strong> This information has been deleted.' +
 					'</div>'
 		});
 

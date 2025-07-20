@@ -10,12 +10,12 @@ namespace Services
 {
     public class LionTypeService
     {
-        private readonly LionTypeRepository _reporitory;
-        public LionTypeService() => _reporitory ??= new LionTypeRepository();
+        private readonly LionTypeRepository _repository;
+        public LionTypeService() => _repository ??= new LionTypeRepository();
 
         public async Task<List<LionType>> GetAllAsync()
         {
-            return await _reporitory.GetAllAsync();
+            return await _repository.GetAllAsync();
         }
     }
 }

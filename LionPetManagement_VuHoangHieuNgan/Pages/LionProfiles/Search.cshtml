@@ -145,11 +145,6 @@
 		return console.error(err.toString());
 	});
 
-	// connection.on("ReceiveDelete_LionProfile", function (lionProfileId) {
-	// 	$('#lionProfilesTBodyId').find(`tr[id='${lionProfileId}']`).fadeOut(300, function() {
-	// 		$(this).remove();
-	// 	});
-	// });
 	connection.on("ReceiveDelete_LionProfile", function (lionProfileId) {
 		// Lấy current page từ URL hoặc từ server
 		var currentPage = @Model.CurrentPage;

@@ -44,7 +44,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-app.MapRazorPages().RequireAuthorization();
+//app.MapRazorPages().RequireAuthorization();
 
 app.MapHub<LionProfileHub>("/LionProfileHub");
 

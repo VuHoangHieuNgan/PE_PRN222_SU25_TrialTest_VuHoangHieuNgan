@@ -10,7 +10,7 @@
 <h4>LionProfile</h4>
 <hr />
 <div class="row">
-	<div class="col-md-4" id="LionProfile_Container">
+	<div class="col-md-4" id="Container">
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<input type="hidden" asp-for="LionProfile.LionProfileId" />
@@ -76,9 +76,9 @@
 	});
 
 	connection.on("ReceiveDelete_LionProfile", function (lionProfileId) {
-		document.getElementById("LionProfile_Container").innerHTML =
+		document.getElementById("Container").innerHTML =
 				'<div class="alert alert-info">' +
-					'<strong>Notice:</strong> This lion profile has been deleted by another user.' +
+					'<strong>Notice:</strong> This information has been deleted.' +
 				'</div>'
 	});
 
@@ -108,7 +108,7 @@
 				+ '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
 				+ '</div>';
 
-			$("#LionProfile_Container").prepend(alertHtml);
+			$("#Container").prepend(alertHtml);
 		} else {
 			console.error("Validation failed. Please check the form inputs.");
 			event.preventDefault();
